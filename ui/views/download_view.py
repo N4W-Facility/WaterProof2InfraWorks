@@ -15,10 +15,11 @@ from ui.theme import COLORS, FONT
 
 
 class DownloadView(ctk.CTkFrame):
-    def __init__(self, master, on_download_complete=None, **kwargs):
+    def __init__(self, master, on_download_complete=None, on_project_changed=None, **kwargs):
         super().__init__(master, fg_color=COLORS["bg"], **kwargs)
         self._project_dir: Path | None = prefs.get_project_dir()
         self._on_download_complete = on_download_complete
+        self._on_project_changed = on_project_changed
         self._build()
         self._refresh_state()
 
@@ -192,6 +193,8 @@ class DownloadView(ctk.CTkFrame):
         prefs.set_project_dir(self._project_dir)
         self._refresh_state()
         self._set_status("")
+        if self._on_project_changed:
+            self._on_project_changed(self._project_dir)
 
     def _on_download(self):
         raw_id = self._entry_id.get().strip()

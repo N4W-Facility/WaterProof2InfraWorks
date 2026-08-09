@@ -48,9 +48,9 @@ class StartView(ctk.CTkFrame):
         steps_frame.grid(row=3, column=0, padx=48, pady=(0, 48))
 
         steps = [
-            ("01", "Download",  "Fetch flood/velocity rasters, DEM and\nportfolios from WaterProof by case ID."),
+            ("01", "Download",  "Fetch flood/velocity rasters, DEM and portfolios from \nWaterProof by case ID."),
             ("02", "Transform", "Reproject all rasters to your\nAutodesk InfraWorks project CRS."),
-            ("03", "Visualize", "Generate RGBA flood imagery ready\nfor Autodesk Infrawork display."),
+            ("03", "Visualize", "Generate RGBA flood imagery and raster of NbS portfolio ready for Autodesk InfraWorks display."),
         ]
 
         for i, (num, title, desc) in enumerate(steps):

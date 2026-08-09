@@ -81,16 +81,14 @@ class App(ctk.CTk):
                 fg_color="transparent",
             ).pack(side="right", padx=(0, 12))
 
-        # Estado inicial de tabs bloqueados
-        if not _has_downloaded_files():
-            self._set_tab_enabled("transform", False)
-        if not _has_reprojected_files():
-            self._set_tab_enabled("visualize", False)
+        # Tabs siempre deshabilitados al inicio
+        self._set_tab_enabled("transform", False)
+        self._set_tab_enabled("visualize", False)
 
         # ── Views ──────────────────────────────────────────────────────────
         self._views = {
             "start":     StartView(self, on_get_started=lambda: self._show("download")),
-            "download":  DownloadView(self, on_download_complete=self.enable_transform),
+            "download":  DownloadView(self, on_download_complete=self.enable_transform, on_project_changed=self._on_project_changed),
             "transform": TransformView(self, on_reproject_complete=self.enable_visualize),
             "visualize": VisualizeView(self),
         }
@@ -103,6 +101,14 @@ class App(ctk.CTk):
             hover_color=COLORS["surface_alt"],
             hover=enabled,
         )
+
+    def _on_project_changed(self, _path):
+        """Llamado por DownloadView cuando el usuario selecciona una carpeta."""
+        has_dl = _has_downloaded_files()
+        has_rp = _has_reprojected_files()
+        self._set_tab_enabled("transform", has_dl)
+        self._set_tab_enabled("visualize", has_rp)
+        self._views["transform"].refresh()
 
     def enable_transform(self):
         """Llamado por DownloadView al completar una descarga exitosa."""

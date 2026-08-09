@@ -35,11 +35,14 @@ sys.path.insert(0, str(project_dir))
 
 # ── Resolver directorios de paquetes nativos ────────────────────────────────
 from cx_Freeze import setup, Executable
-import customtkinter, rasterio, pyproj
+import customtkinter, rasterio, pyproj, pyproj.datadir
+import os
 
 CTK_DIR      = Path(customtkinter.__file__).parent
 RASTERIO_DIR = Path(rasterio.__file__).parent
 PYPROJ_DIR   = Path(pyproj.__file__).parent
+PROJ_DATA    = Path(pyproj.datadir.get_data_dir())
+GDAL_DATA    = Path(os.environ["GDAL_DATA"])
 
 output_dir = project_dir / "compiler" / "WaterProof2Infrawork"
 
@@ -65,6 +68,8 @@ build_exe_options = {
         (str(CTK_DIR),                          "lib/customtkinter"),
         (str(RASTERIO_DIR),                     "lib/rasterio"),
         (str(PYPROJ_DIR),                       "lib/pyproj"),
+        (str(PROJ_DATA),                        "share/proj"),
+        (str(GDAL_DATA),                        "share/gdal"),
         (str(project_dir / "ui" / "icons"),     "ui/icons/"),
     ],
     "include_msvcr": True,

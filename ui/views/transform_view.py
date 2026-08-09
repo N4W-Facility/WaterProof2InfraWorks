@@ -163,6 +163,10 @@ class TransformView(ctk.CTkFrame):
 
     # ------------------------------------------------------------ state logic
 
+    def refresh(self):
+        """Actualiza la UI con el estado actual de prefs (carpeta, CRS)."""
+        self._restore_state()
+
     def _restore_state(self):
         if self._selected_crs:
             self._lbl_selected.configure(text=f"Selected: {self._selected_crs}")
